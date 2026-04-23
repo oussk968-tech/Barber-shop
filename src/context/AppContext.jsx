@@ -13,7 +13,6 @@ const DEMO_SERVICES = [
   { id: 6, img: 'https://images.unsplash.com/photo-1599351431613-7f9c5ecd1ac4?w=600&auto=format&fit=crop&q=80', icon: 'bi-emoji-smile', title: 'Coupe enfant', description: "Coupe douce pour les enfants jusqu'à 12 ans dans une ambiance détendue.", price: 50, duration: '25 min', category: 'Enfant', popular: false },
 ];
 
-
 const normalizeUser = (user) => {
   if (!user) return null;
   return {
@@ -94,10 +93,10 @@ const loadRdvs = async (user, token) => {
     let response;
     
     if (user?.role === 'admin') {
-      //  Admin → tous les RDV
+      // ✅ Admin → tous les RDV
       response = await bookingAPI.adminGetAll(null, token);
     } else {
-      //  Client → ses propres RDV
+      // ✅ Client → ses propres RDV
       response = await bookingAPI.list(token);
     }
     
@@ -105,11 +104,11 @@ const loadRdvs = async (user, token) => {
       let data = response.data?.data || response.data || [];
       if (Array.isArray(data)) {
         const normalized = data.map(normalizeRdv);
-        console.log('Bookings fetched and normalized:', normalized.length);
+        console.log('✅ Bookings fetched and normalized:', normalized.length);
         return normalized;
       }
     } else {
-      console.warn(' Bookings fetch failed:', response.message);
+      console.warn('⚠️ Bookings fetch failed:', response.message);
     }
   } catch (err) {
     console.error('Erreur chargement RDV:', err);
@@ -151,13 +150,13 @@ export function AppProvider({ children }) {
       const storedUser = JSON.parse(localStorage.getItem('user'));
       const storedRdvs = JSON.parse(localStorage.getItem('rdvs'));
       
-      console.log(' AppContext init - token:', token ? 'YES' : 'NO', 'user:', storedUser ? 'YES' : 'NO', 'rdvs:', storedRdvs?.length || 0);
+      console.log('🚀 AppContext init - token:', token ? 'YES' : 'NO', 'user:', storedUser ? 'YES' : 'NO', 'rdvs:', storedRdvs?.length || 0);
       
       if (storedUser) {
         setUser(normalizeUser(storedUser));
       }
       if (storedRdvs && Array.isArray(storedRdvs)) {
-        console.log(' Loading rdvs from localStorage:', storedRdvs.length);
+        console.log('📋 Loading rdvs from localStorage:', storedRdvs.length);
         setRdvs(storedRdvs);
       }
       
@@ -167,7 +166,7 @@ export function AppProvider({ children }) {
         if (storedUser) { 
           setUser(normalizeUser(storedUser));
           // Load demo admin bookings
-          console.log(' Loading demo admin bookings...');
+          console.log('📥 Loading demo admin bookings...');
           const demoAdmin = normalizeUser(storedUser);
           const rdvsData = await loadRdvs(demoAdmin, token);
           setRdvs(rdvsData);
@@ -184,7 +183,7 @@ export function AppProvider({ children }) {
           localStorage.setItem('user', JSON.stringify(normalized));
           setPage('dashboard');
           
-          console.log(' Fetching bookings from backend...');
+          console.log('📥 Fetching bookings from backend...');
           const rdvsData = await loadRdvs(normalized, token);
           setRdvs(rdvsData);
           localStorage.setItem('rdvs', JSON.stringify(rdvsData));
@@ -202,20 +201,20 @@ export function AppProvider({ children }) {
   // ── Charger les services du serveur au démarrage ──
   useEffect(() => {
     const loadServices = async () => {
-      console.log(' Loading services from server...');
+      console.log('📡 Loading services from server...');
       try {
         const response = await serviceAPI.list();
         if (response.success && Array.isArray(response.data)) {
           const normalized = response.data.map(normalizeService);
-          console.log(' Services loaded from server:', normalized.length);
+          console.log('✅ Services loaded from server:', normalized.length);
           setServices(normalized);
           localStorage.setItem('services', JSON.stringify(normalized));
         } else {
-          console.warn(' Services response invalid, using DEMO_SERVICES');
+          console.warn('⚠️ Services response invalid, using DEMO_SERVICES');
           setServices(DEMO_SERVICES);
         }
       } catch (err) {
-        console.warn(' Failed to load services from server:', err.message);
+        console.warn('⚠️ Failed to load services from server:', err.message);
         setServices(DEMO_SERVICES);
       }
     };
@@ -238,7 +237,7 @@ export function AppProvider({ children }) {
       localStorage.setItem('user', JSON.stringify(normalizedAdmin));
       
       // Load demo admin bookings
-      console.log(' Loading demo admin bookings...');
+      console.log('📥 Loading demo admin bookings...');
       const rdvsData = await loadRdvs(normalizedAdmin, 'demo_admin_token');
       setRdvs(rdvsData);
       localStorage.setItem('rdvs', JSON.stringify(rdvsData));
@@ -256,10 +255,10 @@ export function AppProvider({ children }) {
       localStorage.setItem('user', JSON.stringify(normalizedUser));
       setPage('dashboard');
       // Fetch user's bookings from Backend
-      console.log(' Login successful, fetching bookings...');
+      console.log('🔐 Login successful, fetching bookings...');
       try {
         const rdvsData = await loadRdvs(normalizedUser, res.data.token);
-        console.log(' Bookings loaded and normalized:', rdvsData.length);
+        console.log('✅ Bookings loaded and normalized:', rdvsData.length);
         setRdvs(rdvsData);
         localStorage.setItem('rdvs', JSON.stringify(rdvsData));
       } catch (err) {
@@ -275,14 +274,7 @@ export function AppProvider({ children }) {
 
   const register = async (data) => {
     try {
-      const res = await authAPI.register({
-        first_name: data.prenom,
-        last_name: data.nom,
-        email: data.email,
-        phone: data.phone,
-        password: data.password,
-        password_confirmation: data.confirm,
-      });
+      const res = await authAPI.register(data);
 
       if (res.success) {
         const normalizedUser = normalizeUser(res.data.user);
@@ -328,7 +320,7 @@ export function AppProvider({ children }) {
       return;
     }
     
-    console.log(' Creating booking with data:', rdv);
+    console.log('📅 Creating booking with data:', rdv);
     
     try {
       const payload = {
@@ -339,9 +331,9 @@ export function AppProvider({ children }) {
         note: rdv.note || '',
       };
       
-      console.log(' Sending payload to Backend:', payload);
+      console.log('📤 Sending payload to Backend:', payload);
       const res = await bookingAPI.create(payload, token);
-      console.log(' Backend response:', res);
+      console.log('📥 Backend response:', res);
       
       if (res.success) {
         // Normalize the booking data from Backend
@@ -363,7 +355,7 @@ export function AppProvider({ children }) {
         
         // Reload bookings pour admin pour voir immédiatement
         if (currentUser?.role === 'admin') {
-          console.log(' Admin detected - reloading all bookings...');
+          console.log('🔄 Admin detected - reloading all bookings...');
           const adminRdvs = await loadRdvs(currentUser, token);
           setRdvs(adminRdvs);
           localStorage.setItem('rdvs', JSON.stringify(adminRdvs));
@@ -372,7 +364,7 @@ export function AppProvider({ children }) {
         showNotif('success', 'Rendez-vous confirmé !', `${rdv.service} le ${formatDate(rdv.date)} à ${rdv.time}`);
         setDashTab('rdvs');
       } else {
-        console.warn('Backend error:', res.message);
+        console.warn('⚠️ Backend error:', res.message);
         if (res.errors) {
           const firstError = Object.values(res.errors)[0]?.[0] || res.message;
           showNotif('error', 'Erreur', firstError);
@@ -381,7 +373,7 @@ export function AppProvider({ children }) {
         }
       }
     } catch (error) {
-      console.error(' Exception during booking:', error);
+      console.error('❌ Exception during booking:', error);
       showNotif('error', 'Erreur', 'Impossible de créer le rendez-vous');
     }
   };
@@ -412,8 +404,8 @@ export function AppProvider({ children }) {
 
   const updateProfile = async (data) => {
     const token = localStorage.getItem('token');
-    console.log(' Token for updateProfile:', token ? token.substring(0, 20) + '...' : 'NO TOKEN');
-    console.log(' Token length:', token?.length);
+    console.log('🔑 Token for updateProfile:', token ? token.substring(0, 20) + '...' : 'NO TOKEN');
+    console.log('📊 Token length:', token?.length);
     if (!token) {
       showNotif('error', 'Erreur', 'Vous devez être connecté pour modifier votre profil.');
       return { success: false };
@@ -427,10 +419,10 @@ export function AppProvider({ children }) {
       phone: data.phone,
     };
 
-    console.log(' Sending updateProfile request with payload:', payload);
+    console.log('📤 Sending updateProfile request with payload:', payload);
     try {
       const res = await userAPI.update(payload, token);
-      console.log(' updateProfile response:', res);
+      console.log('📥 updateProfile response:', res);
       if (res.success) {
         const normalizedUser = normalizeUser(res.data.user || res.data);
         setUser(normalizedUser);
@@ -442,7 +434,7 @@ export function AppProvider({ children }) {
       showNotif('error', 'Erreur', res.message || 'Impossible de mettre à jour le profil.');
       return { success: false, message: res.message };
     } catch (err) {
-      console.error(' Exception in updateProfile:', err);
+      console.error('❌ Exception in updateProfile:', err);
       showNotif('error', 'Erreur', 'Impossible de mettre à jour le profil.');
       return { success: false, message: err.message };
     }
@@ -466,7 +458,7 @@ export function AppProvider({ children }) {
     }
 
     try {
-      console.log('Sending changePassword with correct field names');
+      console.log('🔐 Sending changePassword with correct field names');
       const res = await userAPI.changePassword({
         current_password: currentPassword,
         new_password: newPassword,
@@ -503,17 +495,17 @@ export function AppProvider({ children }) {
 
   // ── Rafraîchir les services depuis le serveur ──
   const refreshServices = async () => {
-    console.log(' Refreshing services...');
+    console.log('🔄 Refreshing services...');
     try {
       const response = await serviceAPI.list();
       if (response.success && Array.isArray(response.data)) {
         const normalized = response.data.map(normalizeService);
-        console.log(' Services refreshed:', normalized.length);
+        console.log('✅ Services refreshed:', normalized.length);
         setServices(normalized);
         localStorage.setItem('services', JSON.stringify(normalized));
       }
     } catch (err) {
-      console.warn(' Failed to refresh services:', err.message);
+      console.warn('⚠️ Failed to refresh services:', err.message);
     }
   };
 
