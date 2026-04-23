@@ -7,14 +7,30 @@ export default function LoginPage() {
   const { login, setPage } = useApp();
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const ch = e => setForm({ ...form, [e.target.name]: e.target.value });
 
   const submit = async (e) => {
     e.preventDefault();
+    setError('');
+
+    if (!form.email.trim() || !form.password) {
+      setError('Veuillez remplir tous les champs.');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      setError('Format d\'email invalide.');
+      return;
+    }
+
     setLoading(true);
-    await new Promise(r => setTimeout(r, 600));
-    login(form.email, form.password);
+    const res = await login(form.email, form.password);
+    if (res && !res.success) {
+      setError(res.message || 'Email ou mot de passe incorrect.');
+    }
     setLoading(false);
   };
 
@@ -47,12 +63,17 @@ export default function LoginPage() {
                 <h4 style={{ fontFamily: 'var(--font-display)', color: 'var(--text-dark)', marginBottom: '0.4rem', textAlign: 'center', fontWeight: 700, fontSize: '1.7rem' }}>
                   Connexion
                 </h4>
-                <p style={{ color: 'var(--text-mid)', fontSize: '0.85rem', textAlign: 'center', marginBottom: '1.75rem', fontFamily: 'var(--font-body)' }}>
+                <p style={{ color: 'var(--text-mid)', fontSize: '0.85rem', textAlign: 'center', marginBottom: '1.5rem', fontFamily: 'var(--font-body)' }}>
                   Accédez à votre espace personnel
                 </p>
 
-                {/* Decorative line */}
-                <div style={{ width: '40px', height: '2px', background: 'linear-gradient(90deg, var(--brown), var(--brown-light))', margin: '0 auto 1.75rem', borderRadius: '2px' }} />
+                <div style={{ width: '40px', height: '2px', background: 'linear-gradient(90deg, var(--brown), var(--brown-light))', margin: '0 auto 1.5rem', borderRadius: '2px' }} />
+
+                {error && (
+                  <div className="alert alert-danger d-flex align-items-center gap-2 mb-3" style={{ fontSize: '0.84rem' }}>
+                    <i className="bi bi-exclamation-circle-fill"></i>{error}
+                  </div>
+                )}
 
                 <form onSubmit={submit}>
                   <div className="mb-3">
@@ -67,7 +88,6 @@ export default function LoginPage() {
                       required
                     />
                   </div>
-
                   <div className="mb-4">
                     <label className="form-label">Mot de passe</label>
                     <input
