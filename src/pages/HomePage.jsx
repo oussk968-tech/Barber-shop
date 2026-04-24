@@ -141,7 +141,6 @@ export default function HomePage() {
                     </div>
                     <div className="p-4 d-flex flex-column" style={{ flex: 1 }}>
                       <div className="d-flex align-items-center gap-2 mb-2">
-                        <i className={`bi ${s.icon}`} style={{ color: 'var(--brown)', fontSize: '1rem' }}></i>
                         <h5 style={{ fontFamily: 'var(--font-display)', fontSize: '1.05rem', color: 'var(--text-dark)', margin: 0, fontWeight: 600 }}>{s.title}</h5>
                       </div>
                       <div className="d-flex justify-content-between align-items-center mt-auto pt-3" style={{ borderTop: '1px solid var(--border)' }}>
