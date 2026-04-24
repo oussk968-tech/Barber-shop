@@ -311,7 +311,7 @@ export default function HomePage() {
       <footer style={{ background: 'var(--brown-deeper)', padding: '0', minHeight: '75px', display: 'flex', alignItems: 'center', marginTop: 'auto', overflow: 'hidden' }}>
         <div className="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 py-3 py-md-0">
           <img
-            src="/images/ChatGPT Image 21 avr. 2026, 19_06_32.png"
+            src="/public/ChatGPT Image 21 avr. 2026, 19_06_32.png"
             alt="Barber Shop"
             style={{ height: '70px', width: 'auto', cursor: 'pointer', transform: 'scale(1.7)' }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

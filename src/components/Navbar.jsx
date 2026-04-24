@@ -19,10 +19,10 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { label: 'Accueil',  action: () => go('#home') },
+    { label: 'Accueil', action: () => go('#home') },
     { label: 'Services', action: () => go('#services') },
-    { label: 'Galerie',  action: () => go('#gallery') },
-    { label: 'Contact',  action: () => go('#contact') },
+    { label: 'Galerie', action: () => go('#gallery') },
+    { label: 'Contact', action: () => go('#contact') },
   ];
 
   const navBg = page !== 'home'
@@ -40,28 +40,28 @@ export default function Navbar() {
         WebkitBackdropFilter: 'blur(20px)',
         borderBottom: '1px solid var(--border)',
         boxShadow: scrolled || page !== 'home' ? 'var(--shadow-md)' : 'var(--shadow-xs)',
-        padding: '0.8rem 0',
+        padding: '0',
+        minHeight: '65px',
         transition: 'var(--ease)',
       }}
     >
-      <div className="container d-flex align-items-center gap-3">
+      <div className="container d-flex align-items-center" style={{ minHeight: '65px' }}>
         {/* Logo */}
-        <img
-          src="/images/ChatGPT Image 21 avr. 2026, 19_06_32.png"
-          alt="Barber Shop Logo"
-          style={{
-            height: '90px', 
-            width: 'auto',
-            objectFit: 'contain',
-            cursor: 'pointer',
-            marginTop: '-15px',
-            marginBottom: '-15px',
-            transition: 'var(--ease-spring)',
-          }}
-          onClick={() => setPage('home')}
-          onMouseEnter={e => { e.target.style.transform = 'scale(1.05)'; }}
-          onMouseLeave={e => { e.target.style.transform = 'scale(1)'; }}
-        />
+        <div className="navbar-brand d-flex align-items-center" style={{ zIndex: 10, padding: 0, margin: 0 }}>
+          <img
+            src="/public/ChatGPT Image 24 avr. 2026, 21_19_10.png"
+            alt="Barber Shop Logo"
+            style={{
+              height: '50px',
+              width: 'auto',
+              objectFit: 'contain',
+              cursor: 'pointer',
+              transform: 'scale(1.7) translateY(5px)',
+              transformOrigin: 'left center',
+            }}
+            onClick={() => setPage('home')}
+          />
+        </div>
 
         {/* Mobile toggle */}
         <button
