@@ -308,12 +308,12 @@ export default function HomePage() {
 
       </div>
       {/*FOOTER*/}
-      <footer style={{ background: 'var(--brown-deeper)', padding: '0', minHeight: '75px', display: 'flex', alignItems: 'center', marginTop: 'auto', overflow: 'hidden' }}>
+      <footer style={{ background: 'var(--brown-deeper)', padding: '0', minHeight: '75px', display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
         <div className="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 py-3 py-md-0">
           <img
-            src="/public/ChatGPT Image 21 avr. 2026, 19_06_32.png"
+            src="/public/logo canva.jpg"
             alt="Barber Shop"
-            style={{ height: '70px', width: 'auto', cursor: 'pointer', transform: 'scale(1.7)' }}
+            style={{ height: '40px', width: 'auto', cursor: 'pointer', transform: 'scale(1.8)', transformOrigin: 'left center' }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           />
           <span style={{ color: 'rgba(255,242,225,0.3)', fontSize: '0.78rem', fontFamily: 'var(--font-body)', textAlign: 'center' }}>

@@ -41,25 +41,28 @@ export default function Navbar() {
         borderBottom: '1px solid var(--border)',
         boxShadow: scrolled || page !== 'home' ? 'var(--shadow-md)' : 'var(--shadow-xs)',
         padding: '0',
-        minHeight: '65px',
+        minHeight: '75px',
         transition: 'var(--ease)',
       }}
     >
-      <div className="container d-flex align-items-center" style={{ minHeight: '65px' }}>
+      <div className="container d-flex align-items-center" style={{ minHeight: '85px' }}>
         {/* Logo */}
         <div className="navbar-brand d-flex align-items-center" style={{ zIndex: 10, padding: 0, margin: 0 }}>
           <img
-            src="/public/ChatGPT Image 24 avr. 2026, 21_19_10.png"
+            src="/public/logo canva.jpg"
             alt="Barber Shop Logo"
             style={{
-              height: '50px',
+              height: '45px',
               width: 'auto',
               objectFit: 'contain',
               cursor: 'pointer',
-              transform: 'scale(1.7) translateY(5px)',
+              transform: 'scale(1.8)',
               transformOrigin: 'left center',
+              transition: 'transform 0.3s ease',
             }}
             onClick={() => setPage('home')}
+            onMouseEnter={e => { e.target.style.transform = 'scale(1.9)'; }}
+            onMouseLeave={e => { e.target.style.transform = 'scale(1.8)'; }}
           />
         </div>
 
