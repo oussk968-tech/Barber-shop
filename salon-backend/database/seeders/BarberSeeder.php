@@ -12,7 +12,12 @@ class BarberSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = [
+        // Disable FK checks, truncate for clean state, then insert
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('barbers')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+        DB::table('barbers')->insert([
             [
                 'id' => 1,
                 'name' => 'Hicham',
@@ -37,13 +42,6 @@ class BarberSeeder extends Seeder
                 'created_at' => '2026-04-20 23:44:46',
                 'updated_at' => '2026-04-20 23:44:46',
             ],
-        ];
-
-        foreach ($data as $item) {
-            DB::table('barbers')->updateOrInsert(
-                ['id' => $item['id']],
-                $item
-            );
-        }
+        ]);
     }
 }

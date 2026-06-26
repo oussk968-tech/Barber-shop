@@ -122,7 +122,7 @@ class ServiceController extends Controller
     {
         $photoUrl = $service->photo;
         if ($photoUrl && str_starts_with($photoUrl, '/storage/')) {
-            $photoUrl = rtrim(config('app.url'), '/') . $photoUrl;
+            $photoUrl = rtrim(url('/'), '/') . $photoUrl;
         }
 
         return [

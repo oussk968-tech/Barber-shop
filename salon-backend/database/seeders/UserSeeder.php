@@ -106,11 +106,10 @@ class UserSeeder extends Seeder
             ],
         ];
 
-        foreach ($data as $item) {
-            DB::table('users')->updateOrInsert(
-                ['id' => $item['id']],
-                $item
-            );
-        }
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('users')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+        DB::table('users')->insert($data);
     }
 }

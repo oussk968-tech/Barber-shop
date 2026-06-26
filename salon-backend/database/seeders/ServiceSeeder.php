@@ -12,7 +12,11 @@ class ServiceSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = [
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('services')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+        DB::table('services')->insert([
             [
                 'id' => 1,
                 'name' => 'Coupe Classique',
@@ -63,13 +67,6 @@ class ServiceSeeder extends Seeder
                 'created_at' => '2026-04-22 09:21:37',
                 'updated_at' => '2026-05-12 18:53:34',
             ],
-        ];
-
-        foreach ($data as $item) {
-            DB::table('services')->updateOrInsert(
-                ['id' => $item['id']],
-                $item
-            );
-        }
+        ]);
     }
 }

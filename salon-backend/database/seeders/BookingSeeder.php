@@ -12,7 +12,11 @@ class BookingSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = [
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('bookings')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+        DB::table('bookings')->insert([
             [
                 'id' => 14,
                 'user_id' => 5,
@@ -21,18 +25,11 @@ class BookingSeeder extends Seeder
                 'booking_date' => '2026-06-20',
                 'booking_time' => '20:30:00',
                 'price_at_booking' => '99.00',
-                'status' => 'confirmé',
+                'status' => 'confirm',
                 'note' => null,
                 'created_at' => '2026-06-15 15:03:34',
                 'updated_at' => '2026-06-15 15:03:34',
             ],
-        ];
-
-        foreach ($data as $item) {
-            DB::table('bookings')->updateOrInsert(
-                ['id' => $item['id']],
-                $item
-            );
-        }
+        ]);
     }
 }
