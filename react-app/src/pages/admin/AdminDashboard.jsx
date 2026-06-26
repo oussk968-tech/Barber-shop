@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import AdminOverviewTab from './AdminOverviewTab';
 import AdminBookingsTab from './AdminBookingsTab';
 import AdminProfileTab from './AdminProfileTab';
 import ServiceList from './ServiceList';
@@ -7,6 +8,7 @@ import AddService from './AddService';
 import EditService from './EditService';
 
 const TABS = [
+  { id: 'overview', label: 'Tableau de bord',       icon: 'bi-grid-1x2-fill' },
   { id: 'bookings', label: 'Liste des rendez-vous', icon: 'bi-calendar3' },
   { id: 'list',     label: 'Gérer les services',    icon: 'bi-list-ul' },
   { id: 'add',      label: 'Ajouter un service',    icon: 'bi-plus-circle' },
@@ -15,7 +17,7 @@ const TABS = [
 
 export default function AdminDashboard() {
   const { user, logout, setPage } = useApp();
-  const [tab, setTab] = useState('bookings');
+  const [tab, setTab] = useState('overview');
   const [editTarget, setEditTarget] = useState(null);
 
   const handleEdit = (service) => { setEditTarget(service); setTab('edit'); };
@@ -23,12 +25,13 @@ export default function AdminDashboard() {
 
   const renderContent = () => {
     switch (tab) {
+      case 'overview': return <AdminOverviewTab />;
       case 'bookings': return <AdminBookingsTab />;
       case 'list':     return <ServiceList onEdit={handleEdit} />;
       case 'add':      return <AddService onDone={() => setTab('list')} />;
       case 'edit':     return editTarget ? <EditService service={editTarget} onDone={handleDone} /> : null;
       case 'profile':  return <AdminProfileTab />;
-      default:         return <AdminBookingsTab />;
+      default:         return <AdminOverviewTab />;
     }
   };
 

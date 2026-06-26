@@ -84,7 +84,14 @@ export default function AdminBookingsTab() {
                         }}>
                           {(rdv.clientName || 'C')[0].toUpperCase()}
                         </div>
-                        <span style={{ fontWeight: 600, color: 'var(--text-dark)' }}>{rdv.clientName || 'Client'}</span>
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <span style={{ fontWeight: 600, color: 'var(--text-dark)', lineHeight: 1.2 }}>{rdv.clientName || 'Client'}</span>
+                          {rdv.clientPhone && (
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-light)', marginTop: '2px' }}>
+                              <i className="bi bi-telephone me-1" style={{ fontSize: '0.7rem' }}></i>{rdv.clientPhone}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </td>
                     <td>{rdv.service}</td>

@@ -77,6 +77,7 @@ const normalizeRdv = (rdv) => {
     service: serviceName,
     barber: barberName,
     clientName: clientFullName,
+    clientPhone: rdv.clientPhone || rdv.user?.phone || rdv.phone || '',
     booking_date: bookingDate,
     booking_time: rdv.booking_time || rdv.time || '10:00',
     date: bookingDate,
@@ -161,20 +162,6 @@ export function AppProvider({ children }) {
       }
       
       if (!token) return;
-      // Skip /auth/me call for demo token
-      if (token === 'demo_admin_token') {
-        if (storedUser) { 
-          setUser(normalizeUser(storedUser));
-          // Load demo admin bookings
-          console.log('📥 Loading demo admin bookings...');
-          const demoAdmin = normalizeUser(storedUser);
-          const rdvsData = await loadRdvs(demoAdmin, token);
-          setRdvs(rdvsData);
-          localStorage.setItem('rdvs', JSON.stringify(rdvsData));
-          setPage('dashboard');
-        }
-        return;
-      }
       try {
         const res = await authAPI.me(token);
         if (res.success && res.data?.user) {
@@ -228,25 +215,7 @@ export function AppProvider({ children }) {
   };
 
   const login = async (email, password) => {
-    // ── Mode démo admin (sans backend) ─────────────────────────────────
-    if (email === 'admin@demo.ma' && password === 'admin123') {
-      const demoAdmin = { id: 0, prenom: 'Admin', nom: 'Démo', first_name: 'Admin', last_name: 'Démo', email, role: 'admin' };
-      const normalizedAdmin = normalizeUser(demoAdmin);
-      setUser(normalizedAdmin);
-      localStorage.setItem('token', 'demo_admin_token');
-      localStorage.setItem('user', JSON.stringify(normalizedAdmin));
-      
-      // Load demo admin bookings
-      console.log('📥 Loading demo admin bookings...');
-      const rdvsData = await loadRdvs(normalizedAdmin, 'demo_admin_token');
-      setRdvs(rdvsData);
-      localStorage.setItem('rdvs', JSON.stringify(rdvsData));
-      
-      setPage('dashboard');
-      showNotif('success', 'Bienvenue Admin !', 'Mode démonstration activé.');
-      return true;
-    }
-    // ───────────────────────────────────────────────────────────────────
+
     const res = await authAPI.login({ email, password });
     if (res.success) {
       const normalizedUser = normalizeUser(res.data.user);
