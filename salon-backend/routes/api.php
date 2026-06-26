@@ -33,17 +33,21 @@ Route::get('/migrate-and-seed-secure-9685', function (\Illuminate\Http\Request $
     }
     
     try {
+        // Create storage link at runtime
+        \Illuminate\Support\Facades\Artisan::call('storage:link', ['--force' => true]);
+        
         // Run database seeders
         \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        
         return response()->json([
             'success' => true,
-            'message' => 'Database successfully seeded on Railway!',
+            'message' => 'Database successfully seeded and storage symlink created on Railway!',
             'output' => \Illuminate\Support\Facades\Artisan::output()
         ]);
     } catch (\Exception $e) {
         return response()->json([
             'success' => false,
-            'message' => 'Seeding failed: ' . $e->getMessage()
+            'message' => 'Seeding/Symlink failed: ' . $e->getMessage()
         ], 500);
     }
 });
