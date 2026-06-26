@@ -19,6 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'is_admin' => IsAdmin::class,
         ]);
 
+        // Trust all proxies (required for Railway reverse proxy)
+        $middleware->trustProxies(at: '*');
+
         // CORS global — appliqué AVANT tout le reste (y compris les routes API)
         $middleware->prepend(\Illuminate\Http\Middleware\HandleCors::class);
     })

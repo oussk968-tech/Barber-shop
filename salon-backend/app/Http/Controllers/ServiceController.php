@@ -121,6 +121,13 @@ class ServiceController extends Controller
     private function formatService(Service $service): array
     {
         $photoUrl = $service->photo;
+
+        // Strip any hardcoded localhost/127.0.0.1 prefix from DB data
+        if ($photoUrl) {
+            $photoUrl = preg_replace('#^https?://(127\.0\.0\.1(:\d+)?|localhost(:\d+)?)#', '', $photoUrl);
+        }
+
+        // Build full URL from the relative /storage/... path
         if ($photoUrl && str_starts_with($photoUrl, '/storage/')) {
             $photoUrl = rtrim(url('/'), '/') . $photoUrl;
         }
