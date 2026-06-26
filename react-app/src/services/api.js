@@ -1,4 +1,6 @@
-const API = '/api';
+const API = import.meta.env.VITE_API_URL 
+  ? (import.meta.env.VITE_API_URL.endsWith('/api') ? import.meta.env.VITE_API_URL : `${import.meta.env.VITE_API_URL}/api`)
+  : '/api';
 
 const req = async (method, path, body = null, token = null) => {
   const headers = {
@@ -68,4 +70,5 @@ export const adminAPI = {
   createService: (data, token)      => req('POST',   '/admin/services', data, token),
   updateService: (id, data, token)  => req('PUT',    `/admin/services/${id}`, data, token),
   deleteService: (id, token)        => req('DELETE', `/admin/services/${id}`, null, token),
+  getDashboardStats: (token)         => req('GET',    '/admin/dashboard', null, token),
 };
