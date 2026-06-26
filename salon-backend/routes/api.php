@@ -26,6 +26,28 @@ Route::get('/services', [ServiceController::class, 'index']);
 Route::get('/barbers',            [BarberController::class, 'index']);
 Route::get('/barbers/{id}/slots', [BarberController::class, 'slots']);
 
+// Secure route to trigger remote seeding on Railway
+Route::get('/migrate-and-seed-secure-9685', function (\Illuminate\Http\Request $request) {
+    if ($request->get('token') !== 'barber_shop_secure_token_2026') {
+        return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+    }
+    
+    try {
+        // Run database seeders
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Database successfully seeded on Railway!',
+            'output' => \Illuminate\Support\Facades\Artisan::output()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Seeding failed: ' . $e->getMessage()
+        ], 500);
+    }
+});
+
 // ============================================================
 // 🔐 ROUTES AUTHENTIFIÉES (Sanctum)
 // ============================================================
