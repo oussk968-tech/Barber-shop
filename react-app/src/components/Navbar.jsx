@@ -49,7 +49,7 @@ export default function Navbar() {
         {/* Logo */}
         <div className="navbar-brand d-flex align-items-center" style={{ zIndex: 10, padding: 0, margin: 0 }}>
           <img
-            src="/public/logo canva.jpg"
+            src="/logo canva.jpg"
             alt="Barber Shop Logo"
             style={{
               height: '45px',

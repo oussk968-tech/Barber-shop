@@ -1,6 +1,17 @@
-const API = import.meta.env.VITE_API_URL 
-  ? (import.meta.env.VITE_API_URL.endsWith('/api') ? import.meta.env.VITE_API_URL : `${import.meta.env.VITE_API_URL}/api`)
-  : '/api';
+const getApiUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    const url = import.meta.env.VITE_API_URL;
+    return url.endsWith('/api') ? url : `${url}/api`;
+  }
+  // In development (local), use the local Vite proxy path '/api'
+  if (import.meta.env.DEV) {
+    return '/api';
+  }
+  // In production (Railway), fall back to the live backend URL
+  return 'https://barber-shop-production-ac2f.up.railway.app/api';
+};
+
+const API = getApiUrl();
 
 const req = async (method, path, body = null, token = null) => {
   const headers = {

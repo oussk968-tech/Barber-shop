@@ -12,7 +12,7 @@ const gallery = [
 ];
 
 const team = [
-  { img: '/images/hicham.png', name: 'Hicham', role: 'Fondateur · Master Barber', exp: '15+ ans' },
+  { img: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=500&auto=format&fit=crop&q=80', name: 'Hicham', role: 'Fondateur · Master Barber', exp: '15+ ans' },
   { img: 'https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=500&auto=format&q=80', name: 'Youssef', role: 'Spécialiste Barbe', exp: '8 ans' },
   { img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&auto=format&q=80', name: 'Amine', role: 'Styliste & Coloration', exp: '5 ans' },
 ];
@@ -311,7 +311,7 @@ export default function HomePage() {
       <footer style={{ background: 'var(--brown-deeper)', padding: '0', minHeight: '75px', display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
         <div className="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 py-3 py-md-0">
           <img
-            src="/public/logo canva.jpg"
+            src="/logo canva.jpg"
             alt="Barber Shop"
             style={{ height: '40px', width: 'auto', cursor: 'pointer', transform: 'scale(1.8)', transformOrigin: 'left center' }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
